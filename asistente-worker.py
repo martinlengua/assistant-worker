@@ -4,7 +4,7 @@ import logging
 from azure.servicebus import ServiceBusClient
 from dotenv import load_dotenv
 from twilio.rest import Client
-from assistant import Assistant
+from assist import Assistant
 import time
 
 # Cargar variables de entorno
