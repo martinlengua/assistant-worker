@@ -26,12 +26,12 @@ jobs:
 
       - name: Define Tag
         id: vars
-        run: echo "TAG=${{ github.run_number }}-${{ github.sha }}" >> $GITHUB_ENV
+        run: echo "TAG=${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         env:
           REGISTRY: acrstrategiaapp.azurecr.io
-          IMAGE_NAME: app-strategia-wsp
+          IMAGE_NAME: app-strategia-worker
           TAG: ${{ env.TAG }}
         run: |
           docker build -t $REGISTRY/$IMAGE_NAME:$TAG .
@@ -41,11 +41,11 @@ jobs:
       - name: Update Assistant application
         env:
           REGISTRY: acrstrategiaapp.azurecr.io
-          IMAGE_NAME: app-strategia-wsp
+          IMAGE_NAME: app-strategia-worker
           TAG: ${{ env.TAG }}      
         run: |
           az webapp config container set \
-            --name app-assistant-wsp \
+            --name app-assistant-worker \
             --resource-group rg-strategia-app \
             --docker-custom-image-name $REGISTRY/$IMAGE_NAME:$TAG \
             --docker-registry-server-url https://acrstrategiaapp.azurecr.io \
@@ -55,11 +55,11 @@ jobs:
       - name: Stop Azure Web App
         run: |
           az webapp stop \
-            --name app-assistant-wsp \
+            --name app-assistant-worker \
             --resource-group rg-strategia-app
 
       - name: Start Azure Web App
         run: |
           az webapp start \
-            --name app-assistant-wsp \
+            --name app-assistant-worker \
             --resource-group rg-strategia-app

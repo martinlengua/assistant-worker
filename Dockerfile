@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 EXPOSE 3000
 
 # Run the application
-CMD ["python", "asistente.py"]
+CMD ["python", "asistente-worker.py"]
